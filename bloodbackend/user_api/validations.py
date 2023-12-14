@@ -47,3 +47,19 @@ class UserLoginSerializer(serializers.Serializer):
         return user
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ("email", "username")
+
+class PatientBloodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientBlood
+        fields = [
+            "id",
+            "patient_name",
+            "patient_email",
+            "patient_phone_number",
+            "patient_blood_type",
+            "patient_health_information",
+        ]
