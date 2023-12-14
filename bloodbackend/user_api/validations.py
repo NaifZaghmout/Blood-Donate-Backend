@@ -13,7 +13,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     """
     User Register
     """
-
     class Meta:
         model = UserModel
         fields = "__all__"
@@ -28,3 +27,23 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user_obj.username = clean_data["username"]
         user_obj.save()
         return user_obj
+
+class UserLoginSerializer(serializers.Serializer):
+    """
+    User Login
+    """
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def check_user(self, clean_data):
+        """
+        Create User
+        """
+        user = authenticate(
+            username=clean_data["email"], password=clean_data["password"]
+        )
+        if not user:
+            raise ValidationError("user not found")
+        return user
+
+
