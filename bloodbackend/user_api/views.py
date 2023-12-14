@@ -10,8 +10,9 @@ from .serializers import (
     UserLoginSerializer,
     UserSerializer,
     PatientBloodSerializer,)
-from rest_framework import permissions, status
-from .validations import custom_validation
+from .models import PatientBlood
+from rest_framework import permissions, status, generics
+from .validations import custom_validation, validate_email, validate_password
 
 class UserRegister(APIView):
     """
@@ -53,3 +54,19 @@ class UserLogin(APIView):
             user = serializer.check_user(data)
             login(request, user)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class UserLogout(APIView):
+    """
+    User Logout
+    """
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+    def post(self, request):
+        """
+        Post
+        """
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
