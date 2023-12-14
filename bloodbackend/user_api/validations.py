@@ -20,3 +20,13 @@ def custom_validation(data):
     if not username:
         raise ValidationError("choose another username")
     return data
+
+
+def validate_email(data):
+    """
+    Validate Email
+    """
+    email = data["email"].strip()
+    if not email:
+        raise ValidationError("an email is needed")
+    return True
