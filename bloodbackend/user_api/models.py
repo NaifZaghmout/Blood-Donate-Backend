@@ -25,7 +25,7 @@ class AppUserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, email, password=None):
+    def create_superuser(self, email, username, password=None):
         """
         Create the super user
         """
@@ -33,9 +33,12 @@ class AppUserManager(BaseUserManager):
             raise ValueError("An email is required.")
         if not password:
             raise ValueError("A password is required.")
-        user = self.create_user(email, password)
+
+        user = self.create_user(email=email, password=password)
+        user.username = username
         user.is_superuser = True
-        user.save()
+        user.is_staff = True
+        user.save(using=self._db)
         return user
 
 
