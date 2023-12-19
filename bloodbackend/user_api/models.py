@@ -65,9 +65,18 @@ class PatientBlood(models.Model):
     """
     Patient blood Model
     """
-
     patient_name = models.CharField(max_length=1000)
     patient_email = models.CharField(max_length=1000)
     patient_phone_number = models.CharField(max_length=1000)
     patient_blood_type = models.CharField(max_length=1000)
     patient_health_information = models.CharField(max_length=2000)
+    resolved = models.BooleanField(
+        default=False
+    ) 
+
+    def mark_as_resolved(self):
+        """
+        Mark the case as resolved
+        """
+        self.resolved = True
+        self.save()
