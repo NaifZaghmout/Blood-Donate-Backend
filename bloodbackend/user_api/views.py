@@ -100,3 +100,11 @@ class PatientBloodCreateView(APIView):
 class PatientBloodListView(generics.ListAPIView):
     queryset = PatientBlood.objects.all()
     serializer_class = PatientBloodSerializer
+
+
+
+    
+class PatientBloodDeleteView(generics.DestroyAPIView):
+    queryset = PatientBlood.objects.all()
+    serializer_class = PatientBloodSerializer
+    lookup_field = "id"
