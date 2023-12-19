@@ -17,4 +17,14 @@ urlpatterns = [
     path(
         "listpatients/", views.PatientBloodListView.as_view(), name="patient_blood_list"
     ),
+      path(
+        "delete/<int:pk>/",
+        views.PatientBloodDeleteView.as_view(),
+        name="patient_blood_delete",
+    ),
+    path(
+        "resolve/<int:pk>/",
+        views.PatientBloodMarkResolvedView.as_view(),
+        name="patient_blood_resolve",
+    ),
 ]
