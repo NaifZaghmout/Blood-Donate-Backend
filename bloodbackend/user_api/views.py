@@ -57,6 +57,7 @@ class UserLogin(APIView):
 
 
 
+
 class UserLogout(APIView):
     """
     User Logout
@@ -73,6 +74,7 @@ class UserLogout(APIView):
 
 
 
+
 class UserView(APIView):
     """
     User View
@@ -86,6 +88,7 @@ class UserView(APIView):
         return Response({"user": serializer.data}, status=status.HTTP_200_OK)
 
 
+
 class PatientBloodCreateView(APIView):
     def post(self, request, format=None):
         serializer = PatientBloodSerializer(data=request.data)
@@ -97,9 +100,11 @@ class PatientBloodCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class PatientBloodListView(generics.ListAPIView):
     queryset = PatientBlood.objects.all()
     serializer_class = PatientBloodSerializer
+
 
 
 
@@ -108,3 +113,25 @@ class PatientBloodDeleteView(generics.DestroyAPIView):
     queryset = PatientBlood.objects.all()
     serializer_class = PatientBloodSerializer
     lookup_field = "id"
+
+
+
+
+class PatientBloodMarkResolvedView(generics.UpdateAPIView):
+    queryset = PatientBlood.objects.all()
+    serializer_class = PatientBloodSerializer
+    lookup_field = "id"
+
+    def update(self, request, *args, **kwargs):
+        """
+        Update the case as resolved
+        """
+        instance = self.get_object()
+        instance.mark_as_resolved()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+
+
+
