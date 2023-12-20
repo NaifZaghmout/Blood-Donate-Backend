@@ -14,6 +14,9 @@ from .models import PatientBlood
 from rest_framework import permissions, status, generics
 from .validations import custom_validation, validate_email, validate_password
 
+
+
+
 class UserRegister(APIView):
     """
     User Register
@@ -90,6 +93,8 @@ class UserView(APIView):
 
 
 class PatientBloodCreateView(APIView):
+    permission_classes = [permissions.AllowAny]
+
     def post(self, request, format=None):
         serializer = PatientBloodSerializer(data=request.data)
 
