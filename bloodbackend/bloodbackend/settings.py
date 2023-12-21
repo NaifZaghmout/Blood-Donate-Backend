@@ -38,7 +38,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1",
     "http://0.0.0.0",
-     "https://8000-naifzaghmou-blooddonate-8h80369qfat.ws-us107.gitpod.io",
+    "https://3000-naifzaghmou-blooddonate-n44dv66nx2r.ws-us107.gitpod.io",
 ]
 
 
@@ -56,6 +56,15 @@ CORS_ALLOW_HEADERS = [
 ]
 
 
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
 
 
 AUTH_USER_MODEL = "user_api.AppUser"
@@ -83,6 +92,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
