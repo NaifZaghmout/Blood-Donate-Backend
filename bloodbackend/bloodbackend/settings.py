@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-0=gp84^m2d(244tu!*4vj2!lb-lnpy&yh5zzf!+!y!j0v65!wc'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -34,11 +35,28 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost",
+    "http://localhost:3000",
     "http://127.0.0.1",
     "http://0.0.0.0",
      "https://8000-naifzaghmou-blooddonate-8h80369qfat.ws-us107.gitpod.io",
 ]
+
+
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+
+
 
 AUTH_USER_MODEL = "user_api.AppUser"
 
