@@ -11,7 +11,7 @@ class AppUserManager(BaseUserManager):
     """
     User management
     """
-    def create_user(self, email, password=None):
+    def create_user(self, email, username, password=None):
         """
         Create the user
         """
@@ -20,7 +20,7 @@ class AppUserManager(BaseUserManager):
         if not password:
             raise ValueError("A password is required.")
         email = self.normalize_email(email)
-        user = self.model(email=email)
+        user = self.model(email=email, username=username)
         user.set_password(password)
         user.save()
         return user
@@ -34,8 +34,8 @@ class AppUserManager(BaseUserManager):
         if not password:
             raise ValueError("A password is required.")
 
-        user = self.create_user(email=email, password=password)
-        user.username = username
+        user = self.create_user(email=email,username=username, password=password)
+
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
@@ -52,6 +52,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
+    is_staff = models.BooleanField(default=False)
     objects = AppUserManager()
 
     def __str__(self):

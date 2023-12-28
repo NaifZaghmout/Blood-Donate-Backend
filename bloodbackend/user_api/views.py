@@ -13,8 +13,13 @@ from .serializers import (
 from .models import PatientBlood
 from rest_framework import permissions, status, generics
 from .validations import custom_validation, validate_email, validate_password
+import logging
+from django.core.exceptions import ValidationError
 
 
+
+
+logger = logging.getLogger(__name__)
 
 
 class UserRegister(APIView):
@@ -24,17 +29,18 @@ class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        """
-        Post
-        """
-        clean_data = custom_validation(request.data)
-        serializer = UserRegisterSerializer(data=clean_data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.create(clean_data)
-            if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            clean_data = custom_validation(request.data)
+            serializer = UserRegisterSerializer(data=clean_data)
+            print(serializer)
+            if serializer.is_valid(raise_exception=True):
+                user = serializer.create(clean_data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except ValidationError as ve:
+            return Response({"detail": str(ve)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UserLogin(APIView):
@@ -44,18 +50,12 @@ class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
 
-    
     def post(self, request):
-        """
-        Post
-        """
-        data = request.data
-        assert validate_email(data)
-        assert validate_password(data)
-        serializer = UserLoginSerializer(data=data)
+        serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            user = serializer.check_user(data)
+            user = serializer.validated_data
             login(request, user)
+            print('user logged in sucessfully -------------')
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -68,12 +68,7 @@ class UserLogout(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
 
-    def post(self, request):
-        """
-        Post
-        """
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
+
 
 
 
@@ -107,6 +102,9 @@ class PatientBloodCreateView(APIView):
 
 
 class PatientBloodListView(generics.ListAPIView):
+
+    permission_classes = [permissions.AllowAny]
+
     queryset = PatientBlood.objects.all()
     serializer_class = PatientBloodSerializer
 
@@ -115,17 +113,17 @@ class PatientBloodListView(generics.ListAPIView):
 
     
 class PatientBloodDeleteView(generics.DestroyAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = PatientBlood.objects.all()
     serializer_class = PatientBloodSerializer
-    lookup_field = "id"
-
+    
 
 
 
 class PatientBloodMarkResolvedView(generics.UpdateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = PatientBlood.objects.all()
     serializer_class = PatientBloodSerializer
-    lookup_field = "id"
 
     def update(self, request, *args, **kwargs):
         """
@@ -133,7 +131,10 @@ class PatientBloodMarkResolvedView(generics.UpdateAPIView):
         """
         instance = self.get_object()
         instance.mark_as_resolved()
-        serializer = self.get_serializer(instance)
+        serializer = self.serializer(instance,data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
         return Response(serializer.data)
 
 

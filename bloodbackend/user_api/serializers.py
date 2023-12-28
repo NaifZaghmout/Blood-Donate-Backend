@@ -13,18 +13,25 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     """
     User Register
     """
+
+    password2 = serializers.CharField(write_only=True)
+
     class Meta:
         model = UserModel
-        fields = ['username', 'email', 'password', 'password2']
+        fields = ['username', 'email', 'password', 'password2']  
+
 
     def create(self, validated_data):
         password = validated_data['password']
-        password2 = validated_data.pop('password2')
+        password2 = validated_data.get('password2') 
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords must match.'})
+        user_data = dict(validated_data)
+        user_data.pop('password2', None)
 
-        user = UserModel.objects.create_user(**validated_data)
+        user = UserModel.objects.create_user(**user_data)
         return user
+
 
         
 
@@ -35,9 +42,11 @@ class UserLoginSerializer(serializers.Serializer):
     """
     email = serializers.EmailField()
     password = serializers.CharField()
-
+    class Meta:
+        model = UserModel
+        fields = ['email', 'password']
     def validate(self, data):
-        user = authenticate(**data)
+        user = authenticate(request=self.context.get('request'),email=data['email'],password =data['password'])
         if user and user.is_active:
             return user
         raise serializers.ValidationError("Invalid credentials")
@@ -62,4 +71,5 @@ class PatientBloodSerializer(serializers.ModelSerializer):
             "patient_phone_number",
             "patient_blood_type",
             "patient_health_information",
+            
         ]

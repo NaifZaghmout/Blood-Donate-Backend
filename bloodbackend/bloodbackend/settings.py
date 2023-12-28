@@ -16,11 +16,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0=gp84^m2d(244tu!*4vj2!lb-lnpy&yh5zzf!+!y!j0v65!wc'
+SECRET_KEY = 'kobl@t=yw9d*0y%jt2gjnq78=u!z_rrxb&w8e47l!(jz@m79zy'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -35,13 +32,14 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 CORS_ALLOWED_ORIGINS = [
+    "https://3000-naifzaghmou-blooddonate-n44dv66nx2r.ws-us107.gitpod.io",
     "http://localhost:3000",
     "http://127.0.0.1",
-    "http://0.0.0.0",
-    "https://3000-naifzaghmou-blooddonate-n44dv66nx2r.ws-us107.gitpod.io",
+    "http://0.0.0.0", 
 ]
 
 
+CSRF_TRUSTED_ORIGINS = ["https://8000-naifzaghmou-blooddonate-8h80369qfat.ws-us107.gitpod.io"]
 
 CORS_ALLOW_HEADERS = [
     "accept",
@@ -85,8 +83,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_api',
     'corsheaders',
+    'rest_framework',
+    'user_api',
+   
+   
 ]
 
 MIDDLEWARE = [
@@ -98,7 +99,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'bloodbackend.urls'
