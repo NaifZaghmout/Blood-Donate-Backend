@@ -42,14 +42,20 @@ class UserLoginSerializer(serializers.Serializer):
     """
     email = serializers.EmailField()
     password = serializers.CharField()
+    username = serializers.CharField()
+
     class Meta:
         model = UserModel
-        fields = ['email', 'password']
+        fields = ['email', 'password','username']
+
     def validate(self, data):
+        username = data['username']
         user = authenticate(request=self.context.get('request'),email=data['email'],password =data['password'])
         if user and user.is_active:
+            if username and user.username != username:
+                    raise serializers.ValidationError("Invalid credentials - Username does not match.")
             return user
-        raise serializers.ValidationError("Invalid credentials")
+        raise serializers.ValidationError("Email or Password is incorrect.")
 
 
 

@@ -12,7 +12,7 @@ from .serializers import (
     PatientBloodSerializer,)
 from .models import PatientBlood
 from rest_framework import permissions, status, generics
-from .validations import custom_validation, validate_email, validate_password
+from .validations import  validate_email, validate_password
 import logging
 from django.core.exceptions import ValidationError
 
@@ -31,9 +31,12 @@ class UserRegister(APIView):
     def post(self, request):
 
         try:
-            clean_data = custom_validation(request.data)
+            clean_data = request.data
+            if AppUser.objects.filter(username__icontains=clean_data['username']).exists():
+                return Response({'error':'Username already exists.'},status=status.HTTP_400_BAD_REQUEST)
+            if AppUser.objects.filter(email=clean_data['email']).exists():
+                return Response({'error':'Email already exists.'},status=status.HTTP_400_BAD_REQUEST)
             serializer = UserRegisterSerializer(data=clean_data)
-            print(serializer)
             if serializer.is_valid(raise_exception=True):
                 user = serializer.create(clean_data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -55,8 +58,9 @@ class UserLogin(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.validated_data
             login(request, user)
-            print('user logged in sucessfully -------------')
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            response_data = serializer.data.copy()
+            response_data.pop('password')
+            return Response({'data':response_data}, status=status.HTTP_200_OK)
 
 
 
@@ -145,5 +149,17 @@ class PatientBloodUnresolvedListView(generics.ListAPIView):
 
     def get_queryset(self):
         return PatientBlood.objects.filter(resolved=False)
+
+
+
+
+class PatientBloodDetailView(generics.RetrieveAPIView):
+    """
+    Retrieve details for a specific PatientBlood instance.
+    """
+    permission_classes = [permissions.AllowAny]
+    queryset = PatientBlood.objects.all()
+    serializer_class = PatientBloodSerializer
+    lookup_field = 'id' 
         
 
