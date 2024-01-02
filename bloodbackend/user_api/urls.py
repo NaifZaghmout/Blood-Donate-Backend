@@ -8,6 +8,7 @@ urlpatterns = [
     path("register", views.UserRegister.as_view(), name="register"),
     path("login", views.UserLogin.as_view(), name="login"),
     path("logout", views.UserLogout.as_view(), name="logout"),
+    path('check-user-logged-in/', views.CheckUserLoggedIn.as_view(), name='check_user_logged_in'),
     path("user", views.UserView.as_view(), name="user"),
     path(
         "createpatientblood/",

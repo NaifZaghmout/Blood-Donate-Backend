@@ -161,5 +161,26 @@ class PatientBloodDetailView(generics.RetrieveAPIView):
     queryset = PatientBlood.objects.all()
     serializer_class = PatientBloodSerializer
     lookup_field = 'id' 
+
+
+
+
+class CheckUserLoggedIn(APIView):
+    """
+    Check if the user is logged in.
+    """    
+    permission_classes = [permissions.AllowAny]
+    def post(self, request):
+        """
+        Get method to check user login status.
+        """
+        username = request.data.get('username','')
+       
+        user = AppUser.objects.filter(username=username).first()
+        user_status = {
+            'is_authenticated':user.is_authenticated,
+        }
+   
+        return Response({'message': user_status}, status=status.HTTP_200_OK)
         
 
