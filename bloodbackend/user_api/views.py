@@ -10,7 +10,7 @@ from .serializers import (
     UserLoginSerializer,
     UserSerializer,
     PatientBloodSerializer,)
-from .models import PatientBlood
+from .models import PatientBlood,AppUser
 from rest_framework import permissions, status, generics
 from .validations import  validate_email, validate_password
 import logging
