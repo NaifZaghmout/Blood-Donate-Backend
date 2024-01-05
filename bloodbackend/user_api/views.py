@@ -29,9 +29,17 @@ class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-
+        
         try:
             clean_data = request.data
+
+            if serializer.is_valid(raise_exception=True):
+                user = serializer.create(clean_data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
+
             if AppUser.objects.filter(username=clean_data['username'][0]).exists():
                 return Response({'error':'Username already exists.'},status=status.HTTP_400_BAD_REQUEST)
             if AppUser.objects.filter(email=clean_data['email'][0]).exists():
