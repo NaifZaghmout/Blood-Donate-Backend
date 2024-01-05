@@ -32,7 +32,7 @@ class UserRegister(APIView):
 
         try:
             clean_data = request.data
-            if AppUser.objects.filter(username__icontains=clean_data['username'][0]).exists():
+            if AppUser.objects.filter(username=clean_data['username'][0]).exists():
                 return Response({'error':'Username already exists.'},status=status.HTTP_400_BAD_REQUEST)
             if AppUser.objects.filter(email=clean_data['email'][0]).exists():
                 return Response({'error':'Email already exists.'},status=status.HTTP_400_BAD_REQUEST)
