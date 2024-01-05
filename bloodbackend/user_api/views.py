@@ -29,8 +29,10 @@ class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
+
         
         try:
+            print(1+'1')
             clean_data = request.data
 
             if serializer.is_valid(raise_exception=True):
@@ -49,9 +51,9 @@ class UserRegister(APIView):
                 user = serializer.create(clean_data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ve:
-            return Response({"detail": str(clean_data)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": str(clean_data),"ve":str(ve)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({"error": str(clean_data)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": str(clean_data),"ve":str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UserLogin(APIView):
