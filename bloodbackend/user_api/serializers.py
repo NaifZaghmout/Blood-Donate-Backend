@@ -4,9 +4,11 @@ Django App Serializers
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
-from .models import PatientBlood
+from .models import PatientBlood,AppUser
 
-UserModel = get_user_model()
+
+# UserModel = get_user_model()
+UserModel = AppUser
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
