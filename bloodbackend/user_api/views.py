@@ -31,20 +31,20 @@ class UserRegister(APIView):
     def post(self, request):
 
         
-        try:
-            clean_data = request.data
-            if AppUser.objects.filter(username=clean_data['username']).exists():
-                return Response({'error':'Username already exists.'},status=status.HTTP_400_BAD_REQUEST)
-            if AppUser.objects.filter(email=clean_data['email']).exists():
-                return Response({'error':'Email already exists.'},status=status.HTTP_400_BAD_REQUEST)
-            serializer = UserRegisterSerializer(data=clean_data)
-            if serializer.is_valid(raise_exception=True):
-                user = serializer.create(clean_data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        except ValidationError as ve:
-            return Response({"detail": str(ve)}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # try:
+        clean_data = request.data
+        if AppUser.objects.filter(username=clean_data['username']).exists():
+            return Response({'error':'Username already exists.'},status=status.HTTP_400_BAD_REQUEST)
+        if AppUser.objects.filter(email=clean_data['email']).exists():
+            return Response({'error':'Email already exists.'},status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserRegisterSerializer(data=clean_data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.create(clean_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # except ValidationError as ve:
+        #     return Response({"detail": str(ve)}, status=status.HTTP_400_BAD_REQUEST)
+        # except Exception as e:
+        #     return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UserLogin(APIView):
