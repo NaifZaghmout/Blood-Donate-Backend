@@ -11,7 +11,7 @@ def validate_email(data):
     """
     Validate Email
     """
-    email = data["email"].strip()
+    email = data[0]["email"].strip()
     if not email:
         raise ValidationError("an email is needed")
     return True
@@ -31,7 +31,7 @@ def validate_password(data):
     """
     Validate Password
     """
-    password = data["password"].strip()
+    password = data[0]["password"].strip()
     if not password:
         raise ValidationError("a password is needed")
     return True
