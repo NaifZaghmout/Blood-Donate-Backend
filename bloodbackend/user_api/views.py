@@ -143,7 +143,7 @@ class PatientBloodMarkResolvedView(generics.UpdateAPIView):
         """
         instance = self.get_object()
         instance.mark_as_resolved()
-        serializer = self.serializer(instance,data=request.data, partial=True)
+        serializer = PatientBloodSerializer(instance,data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         
