@@ -6,7 +6,6 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 
-
 class AppUserManager(BaseUserManager):
     """
     User management
@@ -19,7 +18,7 @@ class AppUserManager(BaseUserManager):
             raise ValueError("An email is required.")
         if not password:
             raise ValueError("A password is required.")
-        email = self.normalize_email(email[0]) 
+        email = self.normalize_email(email[0])
         user = self.model(email=email, username=username[0])
         user.set_password(str(password[0]))
         user.save()
@@ -34,13 +33,13 @@ class AppUserManager(BaseUserManager):
         if not password:
             raise ValueError("A password is required.")
 
-        user = self.create_user(email=email,username=username, password=password)
+        user = self.create_user(
+            email=email, username=username, password=password)
 
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
         return user
-
 
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
@@ -73,7 +72,7 @@ class PatientBlood(models.Model):
     patient_health_information = models.CharField(max_length=2000)
     resolved = models.BooleanField(
         default=False
-    ) 
+    )
 
     def mark_as_resolved(self):
         """

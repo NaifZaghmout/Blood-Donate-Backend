@@ -17,7 +17,6 @@ def validate_email(data):
     return True
 
 
-
 def validate_username(data):
     """
     Validate Username
@@ -26,6 +25,7 @@ def validate_username(data):
     if not username:
         raise ValidationError("choose another username")
     return True
+
 
 def validate_password(data):
     """
