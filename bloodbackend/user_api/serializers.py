@@ -48,17 +48,17 @@ class UserLoginSerializer(serializers.Serializer):
     def validate(self, data):
         username = data['username']
         user = authenticate(
-         request=self.context.get('request'),
-         email=data['email'],
-         password=data['password']
+            request=self.context.get('request'),
+            email=data['email'],
+            password=data['password']
         )
-    if user and user.is_active:
-        if username and user.username != username:
-            raise serializers.ValidationError(
-                "Invalid credentials - Username does not match."
-            )
-        return user
-    raise serializers.ValidationError("Email or Password is incorrect.")
+        if user and user.is_active:
+            if username and user.username != username:
+                raise serializers.ValidationError(
+                    "Invalid credentials - Username does not match."
+                )
+            return user
+        raise serializers.ValidationError("Email or Password is incorrect.")
 
 
 class UserSerializer(serializers.ModelSerializer):
