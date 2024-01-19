@@ -69,6 +69,7 @@ class UserLogin(APIView):
             login(request, user)
             response_data = serializer.data.copy()
             response_data.pop('password')
+            response_data['user_id']=user.user_id
             return Response({'data': response_data}, status=status.HTTP_200_OK)
 
 
