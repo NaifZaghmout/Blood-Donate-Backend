@@ -16,6 +16,7 @@ from rest_framework import permissions, status, generics
 from .validations import validate_email, validate_password
 import logging
 from django.core.exceptions import ValidationError
+from Profile.models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +41,10 @@ class UserRegister(APIView):
                     {'error': 'Email already exists.'}, status=status
                     .HTTP_400_BAD_REQUEST)
             serializer = UserRegisterSerializer(data=clean_data)
+            staff_id = UserProfile.generate_staff_id()
             if serializer.is_valid(raise_exception=True):
                 user = serializer.create(clean_data)
+                user_profie = UserProfile.objects.create(user=user,staff_id=staff_id)
                 return Response(
                     serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ve:
