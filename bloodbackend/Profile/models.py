@@ -8,7 +8,7 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(AppUser, on_delete=models.CASCADE, related_name='user_profile')
     staff_id = models.CharField(max_length=20,null=True,blank=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    avatar = models.FileField(upload_to='avatars/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
 
     def __str__(self):
