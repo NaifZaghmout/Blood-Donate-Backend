@@ -4,6 +4,10 @@ from rest_framework import status
 from user_api.models import AppUser
 from .models import PatientBlood
 from .serializers import PatientBloodSerializer
+from django.contrib.auth import get_user_model
+from rest_framework import status
+from rest_framework.test import APIClient
+from django.urls import reverse
 
 class PatientBloodTestCase(TestCase):
     def setUp(self):
@@ -126,6 +130,29 @@ class UserRegisterTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('Email already exists.', str(response.data))
+
+class UserLoginTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user_data = {
+            'username': 'ztestuser',
+            'email': 'ztestuser@example.com',
+            'password': 'testpassword',
+        }
+        self.user = get_user_model().objects.create_user(**self.user_data)
+        self.login_url = reverse('login') 
+
+    def test_user_login(self):
+       
+        data = {
+            'email': 'ztestuser@example.com',
+            'password': 'testpassword',
+            'username': 'ztestuser',
+        }
+        response = self.client.post(self.login_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(response.data.get('data').get('username'), 'ztestuser')
 
 
 
