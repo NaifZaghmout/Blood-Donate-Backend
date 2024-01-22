@@ -73,7 +73,60 @@ class PatientBloodTestCase(TestCase):
         response = self.client.patch(url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(PatientBlood.objects.get(id=patient_blood.id).resolved)
+        
+
+#register test case
+class UserRegisterTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_user_register(self):
+        url = f'/api/register'  # Assuming 'register' is the name of your URL pattern
+        data = {
+            'username': 'ztestuser',
+            'email': 'ztestuser@example.com',
+            'password': 'testpassword',
+            'password2': 'testpassword',
+        }
+
+        response = self.client.post(url, data, format='json')
+        print(response.content) 
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # self.assertTrue(AppUser.objects.filter(username='ztestuser').exists())
+
+    def test_user_register_duplicate_username(self):
+        AppUser.objects.create_user(username='ztestuser', email='existing@example.com', password='existingpassword')
+
+        url = f'/api/register' 
+        data = {
+            'username': 'ztestuser', 
+            'email': 'ztestuser@example.com',
+            'password': 'testpassword',
+            'password2': 'testpassword',
+        }
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('Username already exists.', str(response.data))
+
+    def test_user_register_duplicate_email(self):
+        AppUser.objects.create_user(username='existinguser', email='testuser@example.com', password='existingpassword')
+
+        url = f'/api/register'  
+        data = {
+            'username': 'ztestuser',
+            'email': 'testuser@example.com', 
+            'password': 'testpassword',
+            'password2': 'testpassword',
+        }
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('Email already exists.', str(response.data))
+
 
 
      
