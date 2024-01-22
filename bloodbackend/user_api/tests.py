@@ -154,6 +154,31 @@ class UserLoginTestCase(TestCase):
 
         self.assertEqual(response.data.get('data').get('username'), 'ztestuser')
 
+class UserLogoutTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user_data = {
+            'username': 'ztestuser',
+            'email': 'ztestuser@example.com',
+            'password': 'testpassword',
+        }
+        self.user = get_user_model().objects.create_user(**self.user_data)
+        self.login_url = reverse('login') 
+        self.logout_url = reverse('logout') 
+    def test_user_logout(self):
+      
+        login_data = {
+            'email': 'ztestuser@example.com',
+            'password': 'testpassword',
+            'username': 'ztestuser',
+        }
+        login_response = self.client.post(self.login_url, login_data, format='json')
+        self.assertEqual(login_response.status_code, status.HTTP_200_OK)
+
+      
+        logout_response = self.client.post(self.logout_url, format='json')
+        self.assertEqual(logout_response.status_code, status.HTTP_200_OK)
+
 
 
      
