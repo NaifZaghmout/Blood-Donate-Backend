@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get("secret_key")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
