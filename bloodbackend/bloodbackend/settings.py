@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get("secret_key")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True
+DEBUG =False
 # if DEBUG:
 #     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
@@ -182,8 +182,10 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATIC_URL = 'static/'
 
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/media')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
