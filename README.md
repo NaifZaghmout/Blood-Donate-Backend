@@ -79,8 +79,355 @@ Welcome to the [Stockholm-Blood-Donation-Organization](https://stockholm-blood-d
 
 
 
+
+
+## API Endpoints
+
+### User Authentication
+
+#### 1. User Register
+
+- **Endpoint:** `/register`
+- **Description:** Register a new user.
+- **HTTP Method:** POST
+- **Request Parameters:**
+  - `username` (string): The desired username.
+  - `email` (string): The email address of the user.
+  - `password` (string): The user's password.
+  - `password2` (string): Confirmatory password.
+- **Response Example:**
+  `{
+    "user_id": 123,
+    "username": "example_user",
+    "email": "user@example.com",
+    "staff_id": "XYZ123"
+  }`
+
+- **Status Codes:**
+  - 201 Created: User successfully registered.
+  - 400 Bad Request: Invalid request data.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 2. User Login
+
+- **Endpoint:** `/login`
+- **Description:** Log in an existing user.
+- **HTTP Method:** POST
+- **Request Parameters:**
+  - `email` (string): The email address of the user.
+  - `password` (string): The user's password.
+  - `username` (string): The username of the user.
+- **Response Example:**
+`{
+    "user_id": 123,
+    "username": "example_user",
+    "email": "user@example.com",
+    "staff_id": "XYZ123"
+  }`
+- **Status Codes:**
+  - 200 OK: User successfully logged in.
+  - 400 Bad Request: Invalid request data.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 3. User Logout
+
+- **Endpoint:** `/logout`
+- **Description:** Log out the current user.
+- **HTTP Method:** POST
+- **Response Example:**
+`{
+    "message": "Logout successful"
+  }`
+- **Status Codes:**
+  - 200 OK: Logout successful.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 4. Check User Logged In
+
+- **Endpoint:** `/check-user-logged-in/`
+- **Description:** Check if the user is logged in.
+- **HTTP Method:** POST
+- **Request Parameters:**
+ - `username` (string): The username of the user.
+- **Response Example:**
+  ```json
+  {
+    "message": {
+      "is_authenticated": true
+    }
+  }
+- **Status Codes:**
+  - 200 OK: User login status checked.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 5. User View
+
+- **Endpoint:** `/user`
+- **Description:** Get details of the current user.
+- **HTTP Method:** GET
+- **Response Example:**
+`{
+    "user_id": 123,
+    "username": "example_user",
+    "email": "user@example.com",
+    "staff_id": "XYZ123"
+  }`
+- **Status Codes:**
+  - 200 OK: User details retrieved successfully.
+  - 401 Unauthorized: User not authenticated.
+  - 500 Internal Server Error: Server error.
+
+---
+
+### Patient Blood Records
+
+#### 6. Create Patient Blood Record
+
+- **Endpoint:** `/createpatientblood/`
+- **Description:** Create a new record for patient blood information.
+- **HTTP Method:** POST
+- **Request Parameters:**
+  - Include parameters based on the expected input for creating patient blood records.
+- **Response Example:**
+`{
+    "record_id": 456,
+    "patient_name": "John Doe",
+    "blood_type": "A+",
+    "resolved": false
+  }`
+- **Status Codes:**
+  - 201 Created: Record created successfully.
+  - 400 Bad Request: Invalid request data.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 7. List Patients
+
+- **Endpoint:** `/listpatients/`
+- **Description:** List all patient blood records.
+- **HTTP Method:** GET
+- **Response Example:**
+`[
+    {
+      "record_id": 456,
+      "patient_name": "John Doe",
+      "blood_type": "A+",
+      "resolved": false
+    },
+  ]`
+- **Status Codes:**
+  - 200 OK: Records retrieved successfully.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 8. Patient Blood Detail
+
+- **Endpoint:** `/patient-blood/<int:id>/`
+- **Description:** Retrieve details for a specific patient blood record.
+- **HTTP Method:** GET
+- **Response Example:**
+  ```json
+  {
+    "record_id": 456,
+    "patient_name": "John Doe",
+    "blood_type": "A+",
+    "resolved": false
+  }
+- **Status Codes:**
+  - 200 OK: Record details retrieved successfully.
+  - 404 Not Found: Record not found.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 9. Delete Patient Blood Record
+
+- **Endpoint:** `/delete/<int:pk>/`
+- **Description:** Delete a specific patient blood record.
+- **HTTP Method:** DELETE
+- **Response Example:**
+`{
+    "message": "Record deleted successfully"
+  }`
+- **Status Codes:**
+  - 200 OK: Record deleted successfully.
+  - 404 Not Found: Record not found.
+  - 500 Internal Server Error: Server error.
+
+---
+
+#### 10. Resolve Patient Blood Record
+
+- **Endpoint:** `/resolve/<int:pk>/`
+- **Description:** Mark a specific patient blood record as resolved.
+- **HTTP Method:** UPDATE
+- **Response Example:**
+  ```json
+  {
+    "message": "Record resolved successfully"
+  }
+- **Status Codes:**
+  - 200 OK: Record resolved successfully.
+  - 404 Not Found: Record not found.
+  - 500 Internal Server Error: Server error.
+
+
+### User Profile
+
+#### Retrieve User Profile
+
+- **Endpoint:** `/api/userprofile-detail/{user_id}/`
+- **Method:** `GET`
+- **Description:** Retrieve the profile information of a specific user.
+- **Parameters:**
+- `{user_id}` (path parameter): ID of the user to retrieve the profile for.
+
+
+
+**Example Request:**
+
+`curl -X GET http://your-api-base-url/api/userprofile-detail/123/`
+
+
+- **Example Response:**
+`{
+  "user": 123,
+  "staff_id": "STAFF-5678",
+  "avatar": "https://example.com/avatar.jpg",
+  "bio": "A passionate developer.",
+  "username": "john_doe",
+  "email": "john.doe@example.com"
+}`
+
+- **Update User Profile**
+
+**Endpoint:** `/api/update-profile/{user_id}/`
+**Method:** `PUT`
+**Description:**  `Update the profile information of a specific user.`
+**{user_id} (path parameter):** `ID of the user to update the profile for.`
+**Request Body:**
+
+`{
+  "staff_id": "STAFF-5679",
+  "avatar": "https://example.com/new-avatar.jpg",
+  "bio": "Updated bio information."
+}`
+
+- **Example Request:**
+
+`curl -X PUT -H "Content-Type: application/json" -d '{"staff_id": "STAFF-5679", "avatar": "https://example.com/new-avatar.jpg", "bio": "Updated bio information."}' http://your-api-base-url/api/update-profile/123/`
+
+
+- **Example Response:**
+
+`{
+  "user": 123,
+  "staff_id": "STAFF-5679",
+  "avatar": "https://example.com/new-avatar.jpg",
+  "bio": "Updated bio information.",
+  "username": "john_doe",
+  "email": "john.doe@example.com"
+}`
+
+
+
+
+
+
+
 ## Bugs 
 
+
+## Bug 1
+
+### Symptom
+In the `UserLogin` view's `post` method, there is an attempt to access the `user_id` attribute directly on the user object, leading to a simulated `AttributeError`.
+
+### Error Message
+Simulated error: `AttributeError: 'AppUser' object has no attribute 'user_id'`.
+
+### Steps to Reproduce
+1. Send a login request to the UserLogin endpoint.
+2. Simulate a scenario where the `user_id` attribute is not directly available on the user object.
+
+### Resolution Steps
+The error can be resolved by using the appropriate way to get the user ID. The suggested fix is to use the `id` attribute instead of `user_id`.
+
+### Error Code
+`class UserLogin(APIView):
+
+    def post(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.validated_data
+            login(request, user)
+            
+            response_data = serializer.data.copy()
+            response_data.pop('password')
+            response_data['user_id'] = user.user_id
+            
+            return Response({'data': response_data}, status=status.HTTP_200_OK)`
+
+
+### Fix code
+
+`class UserLogin(APIView):
+
+    def post(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.validated_data
+            login(request, user)
+            
+            # Suggested fix: Use the 'id' attribute to get the user ID
+            response_data = serializer.data.copy()
+            response_data.pop('password')
+            response_data['user_id'] = user.id  # Suggested fix
+            
+            return Response({'data': response_data}, status=status.HTTP_200_OK)`
+
+
+
+
+## Bug 2
+
+**Symptom:**
+In the `UserLoginSerializer` class, the `UserLogin` view expects a `user_id` attribute in the serializer's data, but the model `AppUser` does not have a `user_id` attribute, leading to a simulated `KeyError`.
+
+**Error Message:**
+1. Simulated error: `KeyError: 'user_id'`.
+
+**Steps to Reproduce:**
+1. Send a login request to the UserLogin endpoint.
+2. Simulate a scenario where the `user_id` attribute is not present in the serializer's data.
+
+**Resolution Steps:**
+The error can be resolved by removing the unnecessary inclusion of the `user_id` attribute in the `UserLogin` view's post method.
+
+**Error Code:**
+`class UserLoginSerializer(serializers.Serializer):
+    class Meta:
+        model = UserModel
+        fields = ['user_id', 'email', 'password', 'username']`
+
+
+
+### Fix Code:
+
+`class UserLoginSerializer(serializers.Serializer):
+    class Meta:
+        model = UserModel
+        fields = ['email', 'password', 'username']`
 
 
 
@@ -91,14 +438,63 @@ Welcome to the [Stockholm-Blood-Donation-Organization](https://stockholm-blood-d
 ## Python validation
 
 
+### Python Validation - PEP8 Linter
+
+This section focuses on the linting process using the PEP8 online linter (https://pep8ci.herokuapp.com/). The comment "// its all pass //" proudly indicates that the Python code has successfully passed all PEP8 linting checks.
+
+#### PEP8 Linter Details:
+
+- **Linter Used:** [PEP8 Online Linter](https://pep8ci.herokuapp.com/)
+
+- **Configuration:** The code adheres to the rules and configurations specified by PEP8, promoting consistent coding styles and identifying potential issues.
+
+- **Clean Code Practices:** PEP8 linting ensures adherence to clean code practices, enhancing code readability and maintainability.
+
+- **No Linter Warnings or Errors:** The absence of PEP8 warnings or errors signifies that the Python codebase meets the specified quality standards.
+
+#### Why PEP8 Linting Matters:
+
+PEP8 linting plays a crucial role in maintaining code quality by catching potential bugs, enforcing coding conventions, and promoting a uniform coding style across the project. The fact that "// its all pass //" confirms that the Python codebase not only runs successfully but also aligns with PEP8 standards, ensuring a high level of code quality.
+
+Developers can confidently contribute to and build upon the codebase, knowing that it meets PEP8 coding standards as verified by the online linter.
 
 
 
 
 
 
-## Automated tests
+## Automated Tests
 
+This project is equipped with a comprehensive suite of automated tests, ensuring the reliability and correctness of the codebase. The test suite covers a wide range of scenarios, including the creation, listing, deletion, and updating of resources, as well as user registration, login, and logout processes.
+
+### Test Status:
+
+All automated tests have been executed successfully, and the project is currently in a passing state. The status "// its all pass //" confirms that every test case has been validated without any failures.
+
+### Testing Overview:
+
+- **Patient Blood Operations:**
+  - Creation: Successfully creates patient blood records.
+  - Listing: Accurately retrieves the list of patient blood records.
+  - Deletion: Deletes patient blood records as expected.
+  - Resolving: Updates the "resolved" status of patient blood records.
+
+- **User Operations:**
+  - Registration: Handles user registration with unique usernames and emails.
+  - Login: Allows users to log in with valid credentials.
+  - Logout: Successfully logs out authenticated users.
+
+- **User Profile:**
+  - Creation: Creates user profiles with associated staff IDs and avatars.
+  - Staff ID Generation: Generates staff IDs following the specified pattern.
+  - String Representation: Ensures the correct string representation of user profiles.
+
+### Running Tests Locally:
+
+To run the automated tests locally and ensure the continued success of the test suite, execute the following command in your terminal:
+
+
+`python manage.py test`
 
 
 
@@ -106,6 +502,16 @@ Welcome to the [Stockholm-Blood-Donation-Organization](https://stockholm-blood-d
 
 
 ## Credits
+
+The following websites provide valuable resources and tutorials for learning Django REST API calls:
+
+1. [Django REST framework Documentation](https://www.django-rest-framework.org/) - The official documentation for Django REST framework, offering in-depth guides, code samples, and references. It covers a wide range of topics, from basic concepts to advanced features.
+
+2. [Real Python](https://realpython.com/) - Real Python is a platform offering a plethora of tutorials and articles on Django and Django REST framework. The content includes practical examples, hands-on projects, and insights from industry experts, making it a valuable resource for learners at all levels.
+
+3. [MDN Web Docs - Django](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django) - MDN Web Docs provides comprehensive tutorials on Django, covering various aspects, including Django REST framework. The tutorials are well-structured and beginner-friendly, making it an excellent starting point for understanding Django.
+
+4. [Simple is Better Than Complex](https://simpleisbetterthancomplex.com/) - "Simple is Better Than Complex" is a blog by Vitor Freitas. It offers detailed tutorials and articles on Django, Django REST framework, and web development best practices. The content is well-explained and often includes practical examples.
 
 
 
