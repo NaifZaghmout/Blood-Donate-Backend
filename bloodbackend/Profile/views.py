@@ -18,19 +18,20 @@ class UserProfileUpdate(APIView):
 
     def put(self, request, user_id):
         # Assuming you have an authentication system and permissions in place
-        # to ensure that the authenticated user has the right to update this profile.
 
         try:
             user_profile = UserProfile.objects.get(user_id=user_id)
         except UserProfile.DoesNotExist:
-            return Response({'error': 'User Profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                'error': 'User Profile not found.'},
+                 status=status.HTTP_404_NOT_FOUND)
 
-        serializer = UserProfileSerializer(user_profile, data=request.data, partial=True,context={'request': request})
+        serializer = UserProfileSerializer(user_profile, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 class UserProfileDetail(APIView):
     """
@@ -41,7 +42,6 @@ class UserProfileDetail(APIView):
 
     def get(self, request, user_id):
         user_profile = get_object_or_404(UserProfile, user_id=user_id)
-        serializer = UserProfileSerializer(user_profile, context={'request': request})
+        serializer = UserProfileSerializer(user_profile, context={
+            'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-

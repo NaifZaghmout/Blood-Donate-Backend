@@ -9,10 +9,13 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from django.urls import reverse
 
+
 class PatientBloodTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = AppUser.objects.create_user(email='testuser@example.com', username='testuser', password='testpassword')
+        self.user = AppUser.objects.create_user(
+            email='testuser@example.com', username='testuser',
+            password='testpassword')
 
     def create_patient_blood(self, **kwargs):
         defaults = {
@@ -46,7 +49,7 @@ class PatientBloodTestCase(TestCase):
         self.assertEqual(PatientBlood.objects.get().patient_name, 'Test Patient')
 
     def test_list_patient_blood(self):
-        self.create_patient_blood()  # Create a patient blood record for testing
+        self.create_patient_blood()
         url = '/api/listpatients/'
 
         self.client.force_login(self.user)
@@ -77,15 +80,15 @@ class PatientBloodTestCase(TestCase):
         response = self.client.patch(url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
 
-#register test case
+
+# register test case
 class UserRegisterTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
 
     def test_user_register(self):
-        url = f'/api/register'  # Assuming 'register' is the name of your URL pattern
+        url = f'/api/register'
         data = {
             'username': 'ztestuser',
             'email': 'ztestuser@example.com',
@@ -94,17 +97,19 @@ class UserRegisterTestCase(TestCase):
         }
 
         response = self.client.post(url, data, format='json')
-        print(response.content) 
+        print(response.content)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # self.assertTrue(AppUser.objects.filter(username='ztestuser').exists())
 
     def test_user_register_duplicate_username(self):
-        AppUser.objects.create_user(username='ztestuser', email='existing@example.com', password='existingpassword')
+        AppUser.objects.create_user(
+            username='ztestuser', email='existing@example.com',
+            password='existingpassword')
 
-        url = f'/api/register' 
+        url = f'/api/register'
         data = {
-            'username': 'ztestuser', 
+            'username': 'ztestuser',
             'email': 'ztestuser@example.com',
             'password': 'testpassword',
             'password2': 'testpassword',
@@ -116,12 +121,14 @@ class UserRegisterTestCase(TestCase):
         self.assertIn('Username already exists.', str(response.data))
 
     def test_user_register_duplicate_email(self):
-        AppUser.objects.create_user(username='existinguser', email='testuser@example.com', password='existingpassword')
+        AppUser.objects.create_user(
+            username='existinguser',
+            email='testuser@example.com', password='existingpassword')
 
-        url = f'/api/register'  
+        url = f'/api/register'
         data = {
             'username': 'ztestuser',
-            'email': 'testuser@example.com', 
+            'email': 'testuser@example.com',
             'password': 'testpassword',
             'password2': 'testpassword',
         }
@@ -130,6 +137,7 @@ class UserRegisterTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('Email already exists.', str(response.data))
+
 
 class UserLoginTestCase(TestCase):
     def setUp(self):
@@ -140,10 +148,10 @@ class UserLoginTestCase(TestCase):
             'password': 'testpassword',
         }
         self.user = get_user_model().objects.create_user(**self.user_data)
-        self.login_url = reverse('login') 
+        self.login_url = reverse('login')
 
     def test_user_login(self):
-       
+
         data = {
             'email': 'ztestuser@example.com',
             'password': 'testpassword',
@@ -154,6 +162,7 @@ class UserLoginTestCase(TestCase):
 
         self.assertEqual(response.data.get('data').get('username'), 'ztestuser')
 
+
 class UserLogoutTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -163,22 +172,19 @@ class UserLogoutTestCase(TestCase):
             'password': 'testpassword',
         }
         self.user = get_user_model().objects.create_user(**self.user_data)
-        self.login_url = reverse('login') 
-        self.logout_url = reverse('logout') 
+        self.login_url = reverse('login')
+        self.logout_url = reverse('logout')
+
     def test_user_logout(self):
-      
+
         login_data = {
             'email': 'ztestuser@example.com',
             'password': 'testpassword',
             'username': 'ztestuser',
         }
-        login_response = self.client.post(self.login_url, login_data, format='json')
+        login_response = self.client.post(
+            self.login_url, login_data, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
 
-      
         logout_response = self.client.post(self.logout_url, format='json')
         self.assertEqual(logout_response.status_code, status.HTTP_200_OK)
-
-
-
-     

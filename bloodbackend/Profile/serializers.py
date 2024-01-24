@@ -10,21 +10,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('user','staff_id', 'avatar', 'bio','username','email')
+        fields = ('user', 'staff_id', 'avatar', 'bio', 'username', 'email')
 
-    
-    def get_username(self,obj):
+    def get_username(self, obj):
         if obj:
             username = obj.user.username
             return username
         return None
-    
-    def get_email(self,obj):
+
+    def get_email(self, obj):
         if obj:
             email = obj.user.email
             return email
         return None
-
- 
-
-   

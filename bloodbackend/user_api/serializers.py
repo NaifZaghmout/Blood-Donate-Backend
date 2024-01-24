@@ -43,7 +43,7 @@ class UserLoginSerializer(serializers.Serializer):
 
     class Meta:
         model = UserModel
-        fields = ['user_id','email', 'password', 'username']
+        fields = ['user_id', 'email', 'password', 'username']
 
     def validate(self, data):
         username = data['username']

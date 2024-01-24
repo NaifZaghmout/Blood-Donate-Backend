@@ -44,7 +44,8 @@ class UserRegister(APIView):
             staff_id = UserProfile.generate_staff_id()
             if serializer.is_valid(raise_exception=True):
                 user = serializer.create(clean_data)
-                user_profie = UserProfile.objects.create(user=user,staff_id=staff_id)
+                user_profie = UserProfile.objects.create(
+                    user=user, staff_id=staff_id)
                 return Response(
                     serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ve:
@@ -72,7 +73,7 @@ class UserLogin(APIView):
             login(request, user)
             response_data = serializer.data.copy()
             response_data.pop('password')
-            response_data['user_id']=user.user_id
+            response_data['user_id'] = user.user_id
             return Response({'data': response_data}, status=status.HTTP_200_OK)
 
 
