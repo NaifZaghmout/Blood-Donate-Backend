@@ -27,6 +27,7 @@ SECRET_KEY = os.environ.get("secret_key")
 DEBUG =False
 if DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 ALLOWED_HOSTS = ["*"]
 
