@@ -434,6 +434,47 @@ The error can be resolved by removing the unnecessary inclusion of the `user_id`
 
 
 
+## Issue 
+
+### Issue: Frequent Rebase in Gitpod
+
+#### Problem
+Encountering recurring rebase conflicts in Gitpod due to concurrent development efforts. The situation is exacerbated by the late adoption of Agile methodology after the project initiation, leading to increased frequency of code changes.
+
+#### Impact
+- Disrupts development workflow.
+- Increases the risk of overlooking critical changes.
+- Requires constant manual conflict resolution during rebase.
+
+#### Resolution
+
+1. **Communication:**
+   - Establish clear communication channels for code changes coordination.
+   - Encourage team members to communicate development plans to minimize overlap.
+
+2. **Branching Strategy:**
+   - Adopt a feature branching strategy to isolate and manage specific features.
+
+3. **Pulling Strategy:**
+   - Encourage regular pulling of changes from the main branch to local branches.
+   - Use `git pull --rebase` for a cleaner integration.
+
+#### Agile Methodology Integration (Late Adoption)
+
+**Problem:**
+- Agile methodology was introduced late in the project after the mentor section, causing a delay in its benefits.
+
+**Resolution:**
+- Strike a balance between Agile's iterative development and effective communication.
+- Ensure team members are aligned with Agile practices to minimize disruptions.
+- Consider conducting a retrospective to identify areas for improvement and streamline Agile integration.
+
+
+
+
+
+
+
 
 ## Python validation
 
