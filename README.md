@@ -476,6 +476,54 @@ Encountering recurring rebase conflicts in Gitpod due to concurrent development 
 
 
 
+## CRUD Functionality
+
+The CRUD (Create, Read, Update, Delete) functionality is implemented in the Blood Donation Website. The website caters to both staff and users, providing essential features for blood donation activities.
+
+### Staff Functionality
+
+#### Create
+
+- **Staff Signup:**
+  - Staff members can sign up by providing necessary information.
+
+- **Staff Login:**
+  - Registered staff members can log in using their credentials.
+
+#### Read
+
+- **Read Patient Information:**
+  - Staff members can view patient information.
+
+#### Update
+
+- **Edit Patient Information:**
+  - Staff members can edit patient information.
+
+- **Edit Profile Image and BIO:**
+  - Staff members can update their profile image by uploading a new image.
+  - Staff members can edit their profile biography (BIO).
+
+#### Delete
+
+- **Delete Patient Information:**
+  - Staff members can delete patient information.
+
+### User Functionality
+
+#### Create
+
+- **Blood Donation Application:**
+  - Users can submit blood donation applications without the need to register or log in.
+
+
+
+
+
+
+
+
+
 ## Python validation
 
 
